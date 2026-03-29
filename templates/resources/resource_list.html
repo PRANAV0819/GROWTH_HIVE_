@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Resource Vault 📚</h2>
+
+<a href="/resources/upload/" class="btn btn-primary mb-3">Upload Resource</a>
+
+{% for res in resources %}
+<div class="card mb-3 shadow-sm">
+    <div class="card-body">
+        <h5>{{ res.title }}</h5>
+        <p>{{ res.description }}</p>
+        <a href="{{ res.file.url }}" class="btn btn-success">Download</a>
+        <p class="text-muted">Uploaded by {{ res.uploaded_by.username }}</p>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

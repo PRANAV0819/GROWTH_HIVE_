@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Mentor Panel</h2>
+
+{% for req in requests %}
+    <div class="card">
+        <p>
+            Student: <b>{{ req.student.username }}</b><br>
+            Message: {{ req.message }}<br>
+            Status:
+            <span class="status {{ req.status }}">
+                {{ req.status }}
+            </span>
+        </p>
+
+        {% if req.status == 'pending' %}
+            <a href="{% url 'accept_request' req.id %}">
+                <button>Accept</button>
+            </a>
+
+            <a href="{% url 'reject_request' req.id %}">
+                <button style="background:red;">Reject</button>
+            </a>
+        {% endif %}
+    </div>
+{% empty %}
+    <p>No requests</p>
+{% endfor %}
+
+{% endblock %}

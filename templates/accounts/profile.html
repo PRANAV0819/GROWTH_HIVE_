@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto w-full font-sans antialiased">
+    
+    <!-- Page Header & Actions -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900">My Profile</h1>
+            <p class="text-slate-500 mt-2">This is how you appear to the GrowthHive community.</p>
+        </div>
+        <a href="/accounts/profile/edit_profile/" 
+           class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-xl text-white bg-dark-900 hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5">
+            <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
+            Edit Profile
+        </a>
+    </div>
+
+    <!-- Main Profile Card -->
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden relative">
+        <!-- Abstract background blob -->
+        <div class="absolute -top-32 -right-32 w-80 h-80 bg-brand-50 rounded-full blur-3xl opacity-60 z-0 pointer-events-none"></div>
+
+        <div class="relative z-10 p-6 sm:p-10">
+            
+            <!-- Top Section: Avatar & Basic Info -->
+            <div class="flex flex-col sm:flex-row items-center sm:items-center gap-6 pb-8 border-b border-slate-100">
+                
+                <!-- Hexagon Profile Picture -->
+                <div class="relative group flex-shrink-0">
+                    <div class="w-32 h-32 bg-gradient-to-tr from-brand-600 to-brand-400 clip-hexagon p-1 shadow-md flex items-center justify-center">
+                        <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/logo.jpg' %}{% endif %}" 
+                             alt="{{ user.username }}'s Profile" 
+                             class="w-full h-full object-cover clip-hexagon bg-white">
+                    </div>
+                </div>
+
+                <!-- Username and Core Details -->
+                <div class="text-center sm:text-left">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-2">@{{ user.username }}</h2>
+                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-6 text-sm font-medium text-slate-600">
+                        <!-- Department -->
+                        <div class="flex items-center gap-1.5">
+                            <i data-lucide="building-2" class="w-4 h-4 text-brand-500"></i>
+                            <span>{{ user.profile.department|default:"Department not set" }}</span>
+                        </div>
+                        <!-- Year -->
+                        <div class="flex items-center gap-1.5">
+                            <i data-lucide="graduation-cap" class="w-4 h-4 text-brand-500"></i>
+                            <span>{{ user.profile.year|default:"Year not set" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section: Bio & Skills -->
+            <div class="pt-8 space-y-8">
+                
+                <!-- About Me (Bio) -->
+                <div>
+                    <h3 class="flex items-center text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
+                        <i data-lucide="user" class="w-4 h-4 mr-2"></i> About Me
+                    </h3>
+                    {% if user.profile.bio %}
+                        <p class="text-slate-700 leading-relaxed text-base bg-slate-50 rounded-xl p-5 border border-slate-100">
+                            {{ user.profile.bio }}
+                        </p>
+                    {% else %}
+                        <p class="text-slate-400 italic bg-slate-50 rounded-xl p-5 border border-slate-100 border-dashed">
+                            No bio provided yet. Add a bio to tell the community about yourself!
+                        </p>
+                    {% endif %}
+                </div>
+
+                <!-- Skills -->
+                <div>
+                    <h3 class="flex items-center text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
+                        <i data-lucide="wrench" class="w-4 h-4 mr-2"></i> Skills & Expertise
+                    </h3>
+                    
+                    {% if user.profile.skills %}
+                        <!-- We display the skills string inside a stylized badge-like container -->
+                        <div class="inline-flex items-center px-5 py-3 rounded-xl bg-brand-50 text-brand-700 font-medium border border-brand-100">
+                            {{ user.profile.skills }}
+                        </div>
+                    {% else %}
+                        <p class="text-slate-400 italic bg-slate-50 rounded-xl p-5 border border-slate-100 border-dashed inline-block w-full">
+                            No skills added yet. Add your skills to find project teammates easily!
+                        </p>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

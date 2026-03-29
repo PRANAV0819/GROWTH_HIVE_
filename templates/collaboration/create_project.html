@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto w-full font-sans antialiased">
+    
+    <!-- Page Header -->
+    <div class="mb-8">
+        <a href="/collaboration/" class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-brand-600 transition-colors mb-4">
+            <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i>
+            Back to Projects
+        </a>
+        <h1 class="text-3xl font-bold tracking-tight text-slate-900">Create a New Project</h1>
+        <p class="text-slate-500 mt-2">Pitch your idea to the community and find the perfect teammates to help bring it to life.</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden relative">
+        <!-- Abstract background blob -->
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-brand-50 rounded-full blur-3xl opacity-60 z-0 pointer-events-none"></div>
+
+        <form method="POST" class="relative z-10 p-6 sm:p-10 space-y-6">
+            {% csrf_token %}
+
+            <!-- Project Title -->
+            <div>
+                <label for="title" class="block text-sm font-medium text-slate-700 mb-1.5">Project Title <span class="text-rose-500">*</span></label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <i data-lucide="folder-kanban" class="w-5 h-5"></i>
+                    </div>
+                    <input type="text" id="title" name="title" required placeholder="e.g. AI-Powered Study Planner"
+                        class="appearance-none block w-full pl-10 pr-4 py-3 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 sm:text-sm transition-colors shadow-sm bg-slate-50 focus:bg-white">
+                </div>
+            </div>
+
+            <!-- Project Description -->
+            <div>
+                <label for="description" class="block text-sm font-medium text-slate-700 mb-1.5">Project Description <span class="text-rose-500">*</span></label>
+                <textarea id="description" name="description" required rows="5" placeholder="Describe what the project is about, your goals, and what you're looking for in teammates..."
+                    class="appearance-none block w-full px-4 py-3 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 sm:text-sm transition-colors shadow-sm bg-slate-50 focus:bg-white resize-y"></textarea>
+                <p class="text-xs text-slate-500 mt-2 ml-1 flex items-start gap-1">
+                    <i data-lucide="info" class="w-3.5 h-3.5 flex-shrink-0 mt-0.5"></i>
+                    Be as detailed as possible to attract the right people!
+                </p>
+            </div>
+
+            <!-- Skills Required -->
+            <div>
+                <label for="skills" class="block text-sm font-medium text-slate-700 mb-1.5">Skills Required</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <i data-lucide="wrench" class="w-5 h-5"></i>
+                    </div>
+                    <input type="text" id="skills" name="skills" placeholder="e.g. Python, React, UI/UX Design"
+                        class="appearance-none block w-full pl-10 pr-4 py-3 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 sm:text-sm transition-colors shadow-sm bg-slate-50 focus:bg-white">
+                </div>
+                <p class="text-xs text-slate-500 mt-2 ml-1 text-brand-600 font-medium">
+                    Pro tip: Separate multiple skills with commas.
+                </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="pt-6 border-t border-slate-100 flex flex-col sm:flex-row justify-end gap-3 mt-8">
+                <a href="/collaboration/" class="inline-flex justify-center items-center px-6 py-3 border border-slate-300 shadow-sm text-sm font-medium rounded-xl text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors">
+                    Cancel
+                </a>
+                <button type="submit" class="inline-flex justify-center items-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-dark-900 hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5">
+                    <i data-lucide="rocket" class="w-4 h-4 mr-2"></i>
+                    Launch Project
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Re-initialize icons -->
+<script>
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+</script>
+{% endblock %}

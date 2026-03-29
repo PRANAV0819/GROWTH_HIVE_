@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Report Item</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <input class="form-control mb-2" type="text" name="title" placeholder="Item Name">
+    <textarea class="form-control mb-2" name="description" placeholder="Description"></textarea>
+
+    <select class="form-control mb-2" name="status">
+        <option value="lost">Lost</option>
+        <option value="found">Found</option>
+    </select>
+
+    <button class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}

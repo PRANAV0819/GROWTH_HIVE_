@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Marketplace</h2>
+
+<a href="/marketplace/create/"><button>Sell Item</button></a>
+
+{% for item in items %}
+<div class="card">
+    <h3>{{ item.title }}</h3>
+    <p>{{ item.description }}</p>
+    <p><b>Price:</b> ₹{{ item.price }}</p>
+    <p>Seller: {{ item.seller.username }}</p>
+</div>
+{% endfor %}
+
+{% endblock %}

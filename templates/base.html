@@ -1,0 +1,247 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrowthHive</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Configuration to match Landing Page -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            900: '#78350f',
+                        },
+                        dark: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+    
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col overflow-x-hidden">
+
+    <!-- Sidebar Overlay Backdrop -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-dark-900/40 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300" onclick="toggleSidebar()"></div>
+
+    <!-- Vertical Sidebar -->
+    <aside id="sidebar" class="fixed top-0 left-0 z-50 w-72 h-screen bg-white shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <!-- Sidebar Header -->
+        <div class="h-20 flex items-center justify-between px-6 border-b border-slate-100">
+            <span class="font-bold text-xl tracking-tight text-dark-900">Growth<span class="text-brand-600">Hive</span> Menu</span>
+            <button onclick="toggleSidebar()" class="text-slate-400 hover:text-rose-500 transition-colors focus:outline-none p-1 rounded-md hover:bg-slate-50">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Sidebar Navigation Links -->
+        <div class="flex-1 overflow-y-auto sidebar-scroll py-6 px-4 flex flex-col gap-2">
+            
+            {% if user.is_authenticated %}
+                 <a href="{% url 'profile' %}" 
+                 class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:text-brand-600 hover:bg-brand-50 font-medium transition-colors">
+                 <i data-lucide="user" class="w-5 h-5"></i> Profile
+                 </a>
+
+                <a href="/home" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:text-brand-600 hover:bg-brand-50 font-medium transition-colors">
+                    <i data-lucide="home" class="w-5 h-5"></i> Home
+                </a>
+
+                <!-- Mentorship Section -->
+                <div class="mt-4 mb-1 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Mentorship</div>
+                <a href="/mentorship/" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-600 hover:text-brand-600 hover:bg-slate-50 font-medium transition-colors ml-2">
+                    <i data-lucide="users" class="w-4 h-4"></i> Mentors
+                </a>
+                 <a href="{% url 'my_requests' %}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-600 hover:text-brand-600 hover:bg-slate-50 font-medium transition-colors ml-2">
+                    <i data-lucide="inbox" class="w-4 h-4"></i> Mentorship Requests
+                </a>
+                <a href="/mentorship/my_requests/" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-600 hover:text-brand-600 hover:bg-slate-50 font-medium transition-colors ml-2">
+                    <i data-lucide="inbox" class="w-4 h-4"></i> My Requests
+                </a>
+
+                <!-- Collaboration Section -->
+                <div class="mt-4 mb-1 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Collaboration</div>
+                <a href="/collaboration/" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-600 hover:text-brand-600 hover:bg-slate-50 font-medium transition-colors ml-2">
+                    <i data-lucide="briefcase" class="w-4 h-4"></i> Projects
+                </a>
+                <a href="/collaboration/my_projects/" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-600 hover:text-brand-600 hover:bg-slate-50 font-medium transition-colors ml-2">
+                    <i data-lucide="folder-kanban" class="w-4 h-4"></i> My Projects
+                </a>
+                <a href="/collaboration/project_requests/" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-600 hover:text-brand-600 hover:bg-slate-50 font-medium transition-colors ml-2">
+                    <i data-lucide="git-pull-request" class="w-4 h-4"></i> Project Requests
+                </a>
+
+                <!-- Other Links -->
+                <div class="mt-4 mb-1 px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Campus</div>
+                <a href="/marketplace/" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:text-brand-600 hover:bg-brand-50 font-medium transition-colors">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i> Marketplace
+                </a>
+                <a href="/resources/" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:text-brand-600 hover:bg-brand-50 font-medium transition-colors">
+                    <i data-lucide="book-open" class="w-5 h-5"></i> Resources
+                </a>
+                <a href="/lostfound/" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:text-brand-600 hover:bg-brand-50 font-medium transition-colors">
+                    <i data-lucide="search" class="w-5 h-5"></i> Lost & Found
+                </a>
+
+                <!-- Role Specific Links -->
+                {% if user.role == 'alumni' %}
+                <div class="mt-4 border-t border-slate-100 pt-4">
+                    <a href="/mentorship/requests/" class="flex items-center gap-3 px-4 py-3 rounded-xl text-brand-600 bg-brand-50 hover:bg-brand-100 font-medium transition-colors">
+                        <i data-lucide="shield-check" class="w-5 h-5"></i> Mentor Panel
+                    </a>
+                </div>
+                {% endif %}
+
+            {% else %}
+                <!-- Links for logged out users -->
+                <a href="/accounts/login/" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:text-brand-600 hover:bg-slate-50 font-medium transition-colors">
+                    <i data-lucide="log-in" class="w-5 h-5"></i> Login
+                </a>
+                <a href="/accounts/register/" class="flex items-center justify-center gap-2 mt-4 px-4 py-3 rounded-xl text-white bg-dark-900 hover:bg-brand-600 font-medium transition-colors shadow-md">
+                    <i data-lucide="user-plus" class="w-5 h-5"></i> Register Account
+                </a>
+            {% endif %}
+        </div>
+        
+        <!-- Sidebar Footer (Logout) -->
+        {% if user.is_authenticated %}
+        <div class="p-4 border-t border-slate-100 bg-slate-50">
+            <a href="/accounts/logout/" class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-rose-600 hover:text-white hover:bg-rose-500 font-medium transition-colors">
+                <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+            </a>
+        </div>
+        {% endif %}
+    </aside>
+
+    <!-- Top Navigation Bar -->
+    <nav class="fixed w-full z-30 glass-nav shadow-sm h-20 flex items-center">
+        <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            
+            <!-- Left Side: Hexagon Profile Trigger & Logo -->
+            <div class="flex items-center gap-4">
+                
+                <!-- Hexagon Profile Picture Button -->
+                <!-- Note: Replace the 'src' below with your user profile picture tag, e.g., {{ user.profile.image.url }} -->
+                <button onclick="toggleSidebar()" class="relative group focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 rounded-full transition-transform hover:scale-105 active:scale-95">
+                    <div class="w-12 h-12 bg-gradient-to-tr from-brand-600 to-brand-400 clip-hexagon p-0.5 shadow-md flex items-center justify-center">
+                       {% if user.is_authenticated %}
+                           {% if user.profile and user.profile.image %}
+                             <img src="{{ user.profile.image.url }}" 
+                             class="w-full h-full object-cover clip-hexagon bg-white">
+                           {% else %}
+                             <img src="{% static 'images/logo.jpg' %}" 
+                              class="w-full h-full object-cover clip-hexagon bg-white">
+                          {% endif %}
+                      {% else %}
+                           <div class="w-full h-full clip-hexagon bg-white flex items-center justify-center text-brand-500">
+                           <i data-lucide="user" class="w-6 h-6"></i>
+                          </div>
+                      {% endif %}
+                    </div>
+                    
+                    <!-- Notification dot (Optional) -->
+                    {% if user.is_authenticated %}
+                    <span class="absolute top-0 right-0 block h-3 w-3 rounded-full bg-rose-500 ring-2 ring-white"></span>
+                    {% endif %}
+                </button>
+
+                <!-- Brand text -->
+                <a href="/accounts/profile" class="font-bold text-2xl tracking-tight text-dark-900 hover:opacity-80 transition-opacity hidden sm:block">
+                    Growth<span class="text-brand-600">Hive</span>
+                </a>
+            </div>
+
+            <!-- Right Side: User Status -->
+            <div class="flex items-center gap-4">
+                {% if user.is_authenticated %}
+                    <div class="hidden md:flex flex-col items-end mr-2">
+                        <span class="text-sm font-semibold text-dark-900">Welcome back,</span>
+                        <span class="text-xs text-brand-600 font-medium">{{ user.username }}</span>
+                    </div>
+                    <a href="/accounts/logout/" class="hidden sm:inline-flex px-5 py-2.5 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-full transition-all duration-300 shadow-sm">
+                        Logout
+                    </a>
+                {% else %}
+                    <a href="/accounts/login/" class="text-sm font-medium text-slate-600 hover:text-dark-900 transition-colors">Log in</a>
+                    <a href="/accounts/register/" class="px-5 py-2.5 text-sm font-medium text-white bg-dark-900 hover:bg-brand-600 rounded-full transition-all duration-300 shadow-sm hover:shadow-md">Register</a>
+                {% endif %}
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <main class="flex-grow pt-28 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full relative z-10">
+        <!-- Render Django Content Here -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Initialize Scripts -->
+    <script src="{% static 'js/script.js' %}"></script>
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Sidebar Toggle Logic
+        const sidebar = document.getElementById('sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        let isSidebarOpen = false;
+
+        function toggleSidebar() {
+            isSidebarOpen = !isSidebarOpen;
+            
+            if (isSidebarOpen) {
+                // Open Sidebar
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+                // Small delay to allow display:block to apply before animating opacity
+                setTimeout(() => {
+                    backdrop.classList.remove('opacity-0');
+                    backdrop.classList.add('opacity-100');
+                }, 10);
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            } else {
+                // Close Sidebar
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.remove('opacity-100');
+                backdrop.classList.add('opacity-0');
+                
+                // Wait for animation to finish before hiding backdrop
+                setTimeout(() => {
+                    backdrop.classList.add('hidden');
+                }, 300);
+                document.body.style.overflow = ''; // Restore background scrolling
+            }
+        }
+    </script>
+</body>
+</html>

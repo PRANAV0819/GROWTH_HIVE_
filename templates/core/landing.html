@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrowthHive | Your Campus Ecosystem</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#f59e0b', // Amber/Hive Yellow
+                            600: '#d97706',
+                            900: '#78350f',
+                        },
+                        dark: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Custom minimal styling for things Tailwind doesn't cover natively out-of-the-box easily */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+        }
+        
+        .blob-bg {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.4;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+                    <div class="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center text-white font-bold">
+                        <i data-lucide="hexagon" class="w-5 h-5"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-dark-900">Growth<span class="text-brand-600">Hive</span></span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Features</a>
+                    <a href="#how-it-works" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">How it Works</a>
+                    <a href="#community" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Community</a>
+                    <div class="flex items-center space-x-4 ml-4">
+                        <a href="/accounts/login/" class="text-sm font-medium text-slate-600 hover:text-dark-900 transition-colors">Log in</a>
+                        <a href="/accounts/register/" class="px-5 py-2.5 text-sm font-medium text-white bg-dark-900 hover:bg-brand-600 rounded-full transition-all duration-300 shadow-sm hover:shadow-md">Join the Hive</a>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-dark-900 focus:outline-none p-2">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 shadow-lg absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="#features" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-slate-50">Features</a>
+                <a href="#how-it-works" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-slate-50">How it Works</a>
+                <a href="#community" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-slate-50">Community</a>
+                <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3 px-3">
+                    <a href="/accounts/login/" class="block text-center px-4 py-2 border border-slate-200 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Log in</a>
+                    <a href="/accounts/register/" class="block text-center px-4 py-2 rounded-lg text-base font-medium text-white bg-dark-900 hover:bg-brand-600">Join the Hive</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <!-- Abstract Background Blobs -->
+        <div class="blob-bg bg-brand-100 w-96 h-96 top-20 left-[-10%]"></div>
+        <div class="blob-bg bg-blue-100 w-[500px] h-[500px] top-40 right-[-10%]"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-sm font-medium text-slate-600 mb-8 shadow-sm">
+                    <span class="flex h-2 w-2 rounded-full bg-brand-500"></span>
+                    The ultimate student ecosystem is here
+                </div>
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-dark-900 mb-6 leading-tight">
+                    Connect, collaborate, and <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-orange-500">grow together.</span>
+                </h1>
+                <p class="mt-6 text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto mb-10">
+                    A centralized platform connecting students, seniors, and alumni. Find mentors, team up for projects, trade items, and access campus resources all in one place.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="#" class="w-full sm:w-auto px-8 py-4 text-base font-medium text-white bg-dark-900 hover:bg-brand-600 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                        Get Started Free
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#features" class="w-full sm:w-auto px-8 py-4 text-base font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-full transition-all duration-300 shadow-sm flex items-center justify-center gap-2">
+                        Explore Features
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Image Mockup -->
+            <div class="mt-20 relative mx-auto max-w-5xl">
+                <div class="rounded-2xl bg-white shadow-2xl border border-slate-100 overflow-hidden">
+                    <div class="h-12 border-b border-slate-100 bg-slate-50 flex items-center px-4 gap-2">
+                        <div class="w-3 h-3 rounded-full bg-rose-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-amber-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+                    </div>
+                    <div class="aspect-[16/9] bg-slate-50 p-8 flex items-center justify-center relative overflow-hidden">
+                        <!-- Abstract Dashboard UI Representation -->
+                        <div class="w-full h-full grid grid-cols-3 gap-6">
+                            <div class="col-span-2 space-y-6">
+                                <div class="h-1/3 bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex items-center gap-4">
+                                    <div class="w-16 h-16 rounded-full bg-brand-100 flex items-center justify-center text-brand-600"><i data-lucide="users" class="w-8 h-8"></i></div>
+                                    <div class="space-y-2 flex-1">
+                                        <div class="h-4 bg-slate-200 rounded w-1/3"></div>
+                                        <div class="h-3 bg-slate-100 rounded w-1/2"></div>
+                                    </div>
+                                </div>
+                                <div class="h-2/3 bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+                                     <div class="h-4 bg-slate-200 rounded w-1/4 mb-6"></div>
+                                     <div class="grid grid-cols-2 gap-4">
+                                         <div class="h-24 bg-slate-50 rounded-lg border border-slate-100"></div>
+                                         <div class="h-24 bg-slate-50 rounded-lg border border-slate-100"></div>
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-span-1 space-y-6">
+                                <div class="h-1/2 bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+                                    <div class="h-4 bg-slate-200 rounded w-1/2 mb-4"></div>
+                                    <div class="space-y-3">
+                                        <div class="h-8 bg-slate-50 rounded"></div>
+                                        <div class="h-8 bg-slate-50 rounded"></div>
+                                        <div class="h-8 bg-slate-50 rounded"></div>
+                                    </div>
+                                </div>
+                                <div class="h-1/2 bg-brand-500 rounded-xl shadow-sm p-6 flex flex-col justify-end">
+                                    <div class="h-4 bg-white/50 rounded w-2/3 mb-2"></div>
+                                    <div class="h-8 bg-white/20 rounded w-1/3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-brand-600 font-semibold tracking-wide uppercase text-sm mb-3">Core Features</h2>
+                <p class="mt-2 text-3xl leading-8 font-bold tracking-tight text-dark-900 sm:text-4xl">
+                    Everything you need to thrive on campus
+                </p>
+                <p class="mt-4 max-w-2xl text-lg text-slate-500 mx-auto">
+                    We've centralized the disorganized student experience into a single, structured ecosystem.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Feature 1 -->
+                <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="w-14 h-14 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center mb-6 group-hover:bg-brand-500 group-hover:text-white transition-colors duration-300 text-slate-700">
+                        <i data-lucide="users" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark-900 mb-3">Mentorship Hub</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Connect with experienced seniors and successful alumni. Get guidance on academics, career paths, and navigate university life with confidence.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="w-14 h-14 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center mb-6 group-hover:bg-indigo-500 group-hover:text-white transition-colors duration-300 text-slate-700">
+                        <i data-lucide="puzzle" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark-900 mb-3">Project Matchmaking</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Stop struggling to find teammates. Post your project ideas or browse open slots to find peers with the complementary skills you need.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="w-14 h-14 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300 text-slate-700">
+                        <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark-900 mb-3">Student Marketplace</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        A trusted, campus-exclusive marketplace. Buy, sell, or rent textbooks, electronics, dorm essentials, and more directly with other students.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group lg:col-start-1 lg:col-end-2 md:col-start-1 md:col-end-3">
+                    <div class="w-14 h-14 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center mb-6 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300 text-slate-700">
+                        <i data-lucide="book-open" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark-900 mb-3">Resource Sharing</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Access a centralized library of study guides, previous year papers, and lecture notes curated and vetted by the student community.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group lg:col-start-2 lg:col-end-4 md:col-start-1 md:col-end-3">
+                    <div class="flex flex-col md:flex-row gap-6 items-start md:items-center">
+                        <div class="flex-shrink-0 w-14 h-14 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center group-hover:bg-rose-500 group-hover:text-white transition-colors duration-300 text-slate-700">
+                            <i data-lucide="search" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-dark-900 mb-2">Lost & Found</h3>
+                            <p class="text-slate-600 leading-relaxed">
+                                Misplaced your keys or ID card? Use our real-time campus-wide lost and found board to quickly recover your belongings.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 bg-dark-900 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <!-- Simple pattern -->
+            <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="grid-pattern" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M0 40V0H40" fill="none" stroke="currentColor" stroke-width="1"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid-pattern)"/>
+            </svg>
+        </div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-6">Ready to join the ecosystem?</h2>
+            <p class="text-lg text-slate-300 mb-10 max-w-2xl mx-auto">
+                Sign up today with your university email and instantly unlock access to mentors, teammates, and the campus marketplace.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="#" class="w-full sm:w-auto px-8 py-4 text-base font-medium text-dark-900 bg-brand-500 hover:bg-brand-400 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                    Create Student Account
+                </a>
+                <a href="#" class="w-full sm:w-auto px-8 py-4 text-base font-medium text-white border border-slate-700 hover:bg-slate-800 rounded-full transition-all duration-300">
+                    Join as Alumni
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-12">
+                
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-6 h-6 rounded bg-brand-500 flex items-center justify-center text-white font-bold">
+                            <i data-lucide="hexagon" class="w-4 h-4"></i>
+                        </div>
+                        <span class="font-bold text-lg text-dark-900">GrowthHive</span>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed mb-6">
+                        Building the ultimate structured ecosystem to support student growth, collaboration, and success.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-slate-400 hover:text-brand-500 transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-brand-500 transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-brand-500 transition-colors"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold text-dark-900 mb-4">Platform</h4>
+                    <ul class="space-y-3 text-sm text-slate-500">
+                        <li><a href="#" class="hover:text-brand-600 transition-colors">Mentorship</a></

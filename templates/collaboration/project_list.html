@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto w-full font-sans antialiased">
+    
+    <!-- Page Header & Actions -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 gap-4">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900">Explore Projects</h1>
+            <p class="text-slate-500 mt-2 max-w-2xl">Discover open projects, find teammates with the right skills, and build something amazing together.</p>
+        </div>
+        
+        <!-- Create Project Button -->
+        <a href="/collaboration/create/" 
+           class="inline-flex items-center justify-center px-6 py-3 text-sm font-medium rounded-xl text-white bg-dark-900 hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 whitespace-nowrap">
+            <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
+            Create Project
+        </a>
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        {% for project in projects %}
+        <!-- Individual Project Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col relative group">
+            
+            <!-- Abstract background accent on hover -->
+            <div class="absolute -top-12 -right-12 w-32 h-32 bg-brand-50 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity z-0 pointer-events-none"></div>
+
+            <div class="p-6 flex-grow relative z-10 flex flex-col">
+                
+                <!-- Icon & Title -->
+                <div class="flex items-start gap-4 mb-4">
+                    <div class="w-12 h-12 flex-shrink-0 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-brand-500 shadow-sm">
+                        <i data-lucide="lightbulb" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-1 group-hover:text-brand-600 transition-colors line-clamp-2">
+                            {{ project.title }}
+                        </h3>
+                        <p class="text-xs font-medium text-slate-400 flex items-center gap-1">
+                            <i data-lucide="clock" class="w-3 h-3"></i> Accepting Members
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 mb-6">
+                    {{ project.description|default:"No description provided for this project." }}
+                </p>
+
+                <!-- Skills Required -->
+                <div class="mb-6">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center">
+                        <i data-lucide="wrench" class="w-3 h-3 mr-1.5"></i> Skills Needed
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        {% if project.skills_required %}
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-brand-50 border border-brand-100 text-[11px] font-medium text-brand-700">
+                                {{ project.skills_required }}
+                            </span>
+                        {% else %}
+                            <span class="text-xs text-slate-400 italic">No specific skills listed</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Team Members Section -->
+                <div class="mt-auto pt-5 border-t border-slate-100">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center">
+                        <i data-lucide="users" class="w-3 h-3 mr-1.5"></i> Current Team
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-2">
+                        {% for member in project.members.all %}
+                            <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-100 px-2 py-1 rounded-md">
+                                <!-- Small initial avatar -->
+                                <div class="w-5 h-5 rounded bg-brand-100 flex items-center justify-center text-brand-700 text-[10px] font-bold uppercase">
+                                    {{ member.username|first }}
+                                </div>
+                                <span class="text-xs font-medium text-slate-700">{{ member.username }}</span>
+                            </div>
+                        {% empty %}
+                            <span class="text-xs text-slate-500 italic bg-slate-50 px-2 py-1 rounded-md border border-slate-100 border-dashed">
+                                Looking for first member
+                            </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Footer: Join Request Form -->
+            <div class="p-4 bg-slate-50 border-t border-slate-100 relative z-10">
+                <form method="POST" action="{% url 'send_join_request' project.id %}">
+                    {% csrf_token %}
+                    <button type="submit" 
+                            class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-dark-900 hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-all duration-300 shadow-sm hover:shadow-md">
+                        <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i>
+                        Send Join Request
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {% empty %}
+        <!-- Empty State Design -->
+        <div class="col-span-1 md:col-span-2 lg:col-span-3">
+            <div class="flex flex-col items-center justify-center py-20 px-4 bg-white rounded-2xl border border-slate-100 border-dashed text-center">
+                <div class="w-20 h-20 bg-brand-50 rounded-2xl flex items-center justify-center mb-5 shadow-sm border border-brand-100 text-brand-500 transform rotate-3">
+                    <i data-lucide="rocket" class="w-10 h-10"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mb-2">No projects available</h3>
+                <p class="text-slate-500 text-sm max-w-md mx-auto mb-8 leading-relaxed">
+                    There are currently no open projects looking for members. Be the first to start a new initiative and build your dream team!
+                </p>
+                <a href="/collaboration/create/" class="inline-flex items-center justify-center px-8 py-3.5 text-sm font-medium rounded-xl text-white bg-dark-900 hover:bg-brand-600 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5">
+                    <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
+                    Create the First Project
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+<!-- Re-initialize icons -->
+<script>
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+</script>
+{% endblock %}
