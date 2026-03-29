@@ -6,15 +6,49 @@ from .models import User, Profile
 
 
 # 🔷 REGISTER
+# ... existing imports (like User, Profile, login, render, redirect) ...
+
 def register_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        role = request.POST['role']
+        # Safely get the POST data
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        role = request.POST.get('role')
 
-        # Create user
+        # 1. Check if Username or Email already exists in the database
+        if User.objects.filter(username=username).exists():
+            return render(request, 'accounts/register.html', {
+                'error': 'This username already exists. Please choose another.'
+            })
+            
+        if User.objects.filter(email=email).exists():
+            return render(request, 'accounts/register.html', {
+                'error': 'This email is already registered. Please log in instead.'
+            })
+
+        # 2. Domain validation for Students
+        if role == 'student' and not email.endswith('@mmcoe.edu.in'):
+            return render(request, 'accounts/register.html', {
+                'error': 'Students must use a valid @mmcoe.edu.in email address.'
+            })
+
+        # 3. Domain validation for Teachers / Admins
+        if role in ['teacher', 'admin'] and not email.endswith('@mmcoe.edu.in'):
+            return render(request, 'accounts/register.html', {
+                'error': 'Staff/Teachers must use a valid @mmcoe.edu.in email address.'
+            })
+
+        # 4. Domain validation for Alumni
+        if role == 'alumni' and not email.endswith('@gmail.com'):
+            return render(request, 'accounts/register.html', {
+                'error': 'Alumni must use a regular @gmail.com email address.'
+            })
+
+        # Create user (Make sure to pass 'email' into create_user!)
         user = User.objects.create_user(
             username=username,
+            email=email,
             password=password,
             role=role
         )
