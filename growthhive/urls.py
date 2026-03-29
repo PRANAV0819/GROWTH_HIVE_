@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
 from core.views import landing_page   # 👈 import landing
+from django.conf import settings             # ADD THIS
+from django.conf.urls.static import static   # ADD THIS
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -17,3 +19,6 @@ urlpatterns = [
     path('lostfound/', include('lostfound.urls')),
         # admin panel
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

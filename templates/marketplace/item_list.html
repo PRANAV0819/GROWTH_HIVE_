@@ -1,17 +1,250 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
+<div class="max-w-7xl mx-auto w-full font-sans antialiased relative">
+    
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
+        <div>
+            <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Student Marketplace</h1>
+            <p class="text-slate-500 mt-2 max-w-xl">Buy, sell, or trade textbooks, electronics, and dorm essentials with your trusted campus peers.</p>
+        </div>
+        
+        <a href="/marketplace/create/" 
+           class="inline-flex items-center justify-center px-6 py-3.5 text-sm font-bold rounded-2xl text-white bg-dark-900 hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 whitespace-nowrap">
+            <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i>
+            Sell an Item
+        </a>
+    </div>
 
-<h2>Marketplace</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        
+        {% for item in items %}
+        <div class="group bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col relative">
+            
+            <div class="absolute top-4 right-4 z-20">
+                <span class="inline-flex items-center px-3 py-1.5 rounded-xl bg-white/90 backdrop-blur-md border border-slate-100 shadow-sm text-sm font-bold text-brand-600">
+                    ₹{{ item.price }}
+                </span>
+            </div>
 
-<a href="/marketplace/create/"><button>Sell Item</button></a>
+            <div class="aspect-[4/3] bg-slate-50 relative overflow-hidden border-b border-slate-50">
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                {% else %}
+                    <div class="w-full h-full flex flex-col items-center justify-center text-slate-300">
+                        <i data-lucide="package" class="w-12 h-12 mb-2 opacity-20"></i>
+                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-40">No Image Available</span>
+                    </div>
+                {% endif %}
+                <div class="absolute inset-0 bg-dark-900/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
 
-{% for item in items %}
-<div class="card">
-    <h3>{{ item.title }}</h3>
-    <p>{{ item.description }}</p>
-    <p><b>Price:</b> ₹{{ item.price }}</p>
-    <p>Seller: {{ item.seller.username }}</p>
+            <div class="p-6 flex-grow flex flex-col">
+                <div class="mb-4">
+                    <h3 class="text-lg font-bold text-slate-900 mb-2 line-clamp-1 group-hover:text-brand-600 transition-colors">
+                        {{ item.title }}
+                    </h3>
+                    <p class="text-sm text-slate-500 leading-relaxed line-clamp-2">
+                        {{ item.description|default:"No description provided." }}
+                    </p>
+                </div>
+
+                <div class="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-lg bg-brand-50 flex items-center justify-center text-brand-600 text-[10px] font-bold border border-brand-100">
+                            {{ item.seller.username|first|upper }}
+                        </div>
+                        <span class="text-xs font-semibold text-slate-600">@{{ item.seller.username }}</span>
+                    </div>
+                    
+                    <button class="p-2 text-slate-400 hover:text-brand-500 transition-colors">
+                        <i data-lucide="heart" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="px-6 pb-6">
+                <!-- Trigger the JS Modal with the item's specific data -->
+                <button type="button" onclick="openItemModal(
+                    '{{ item.title|escapejs }}', 
+                    '{{ item.price }}', 
+                    '{{ item.description|escapejs|default:'No description provided.' }}', 
+                    '{{ item.seller.username|escapejs }}', 
+                    '{% if item.image %}{{ item.image.url }}{% else %}none{% endif %}'
+                )" class="w-full flex justify-center items-center py-2.5 px-4 bg-slate-50 hover:bg-brand-50 text-slate-700 hover:text-brand-700 border border-slate-100 hover:border-brand-200 rounded-xl text-sm font-bold transition-all duration-300">
+                    View Details
+                </button>
+            </div>
+        </div>
+
+        {% empty %}
+        <div class="col-span-full">
+            <div class="flex flex-col items-center justify-center py-24 px-4 bg-white rounded-3xl border border-slate-100 border-dashed text-center">
+                <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mb-6 text-slate-300">
+                    <i data-lucide="shopping-bag" class="w-10 h-10"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900 mb-2">The Hive is currently empty</h3>
+                <p class="text-slate-500 text-sm max-w-sm mx-auto mb-10 leading-relaxed">
+                    No items are listed for sale right now. Have something you don't need? Be the first to list it and help a fellow student!
+                </p>
+                <a href="/marketplace/create/" class="inline-flex items-center justify-center px-8 py-4 text-sm font-bold rounded-2xl text-white bg-dark-900 hover:bg-brand-600 transition-all shadow-md">
+                    <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
+                    Start Selling Now
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- GLOBAL ITEM MODAL (Hidden by default)      -->
+    <!-- ========================================== -->
+    <div id="item-modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4 sm:p-6" onclick="closeItemModal(event)">
+        
+        <!-- Modal Content Box -->
+        <div id="item-modal-content" class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden transform scale-95 transition-transform duration-300 flex flex-col md:flex-row relative" onclick="event.stopPropagation()">
+            
+            <!-- Close Button -->
+            <button onclick="closeItemModal()" class="absolute top-4 right-4 z-20 w-10 h-10 bg-white/80 backdrop-blur-md hover:bg-white text-slate-500 hover:text-rose-500 rounded-full flex items-center justify-center shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Left: Image Section -->
+            <div class="w-full md:w-1/2 bg-slate-50 relative min-h-[250px] md:min-h-full flex items-center justify-center border-b md:border-b-0 md:border-r border-slate-100">
+                <img id="modal-image" src="" alt="Item Image" class="w-full h-full object-cover hidden">
+                <div id="modal-no-image" class="flex flex-col items-center justify-center text-slate-300 p-10">
+                    <i data-lucide="package" class="w-20 h-20 mb-4 opacity-20"></i>
+                    <span class="text-xs font-bold uppercase tracking-widest opacity-40">No Image Available</span>
+                </div>
+            </div>
+
+            <!-- Right: Details Section -->
+            <div class="w-full md:w-1/2 p-8 sm:p-10 flex flex-col overflow-y-auto max-h-[50vh] md:max-h-[90vh]">
+                
+                <div class="mb-3">
+                    <span id="modal-price" class="inline-flex items-center px-4 py-2 rounded-xl bg-brand-50 border border-brand-100 text-lg font-bold text-brand-600 shadow-sm">
+                        ₹0
+                    </span>
+                </div>
+                
+                <h2 id="modal-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-6 leading-tight">
+                    Item Title
+                </h2>
+                
+                <!-- Seller Details -->
+                <div class="flex items-center gap-4 mb-8 pb-6 border-b border-slate-100">
+                    <div id="modal-seller-initial" class="w-12 h-12 rounded-xl bg-brand-50 flex items-center justify-center text-brand-600 text-lg font-bold border border-brand-100 shadow-sm">
+                        U
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Listed By</p>
+                        <span id="modal-seller" class="text-base font-bold text-slate-700">@username</span>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="flex-grow mb-8">
+                    <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center">
+                        <i data-lucide="align-left" class="w-4 h-4 mr-2 text-slate-400"></i> Description
+                    </h3>
+                    <p id="modal-description" class="text-slate-600 leading-relaxed text-sm whitespace-pre-wrap">
+                        Description goes here...
+                    </p>
+                </div>
+
+                <!-- Action / Contact Button -->
+                <div class="mt-auto pt-2">
+                    <button class="w-full flex justify-center items-center py-4 px-6 bg-dark-900 hover:bg-brand-600 text-white rounded-2xl text-base font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                        <i data-lucide="message-circle" class="w-5 h-5 mr-2"></i>
+                        Contact Seller
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-{% endfor %}
 
+<script>
+    // Initialize icons
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+
+    // Modal Logic
+    function openItemModal(title, price, description, seller, imageUrl) {
+        // 1. Populate Text Data
+        document.getElementById('modal-title').textContent = title;
+        document.getElementById('modal-price').textContent = '₹' + price;
+        document.getElementById('modal-description').textContent = description;
+        document.getElementById('modal-seller').textContent = '@' + seller;
+        document.getElementById('modal-seller-initial').textContent = seller.charAt(0).toUpperCase();
+
+        // 2. Handle Image Rendering
+        const imgEl = document.getElementById('modal-image');
+        const noImgEl = document.getElementById('modal-no-image');
+        
+        if (imageUrl !== 'none' && imageUrl !== '') {
+            imgEl.src = imageUrl;
+            imgEl.classList.remove('hidden');
+            noImgEl.classList.add('hidden');
+        } else {
+            imgEl.classList.add('hidden');
+            noImgEl.classList.remove('hidden');
+        }
+
+        // Hide the navigation bar from base.html
+        const navBar = document.querySelector('nav');
+        if (navBar) {
+            navBar.classList.add('hidden');
+        }
+
+        // 3. Show Modal with Animation
+        const backdrop = document.getElementById('item-modal-backdrop');
+        const content = document.getElementById('item-modal-content');
+        
+        backdrop.classList.remove('hidden');
+        // Small delay to allow display:block to apply before animating opacity/scale
+        setTimeout(() => {
+            backdrop.classList.remove('opacity-0');
+            backdrop.classList.add('opacity-100');
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+        }, 10);
+        
+        // 4. Prevent body scrolling behind the modal
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeItemModal(event) {
+        // If an event is passed (clicking the backdrop), verify we didn't click inside the modal content
+        if (event && event.target !== document.getElementById('item-modal-backdrop')) {
+            return;
+        }
+
+        const backdrop = document.getElementById('item-modal-backdrop');
+        const content = document.getElementById('item-modal-content');
+        
+        // 1. Animate out
+        backdrop.classList.remove('opacity-100');
+        backdrop.classList.add('opacity-0');
+        content.classList.remove('scale-100');
+        content.classList.add('scale-95');
+        
+        // 2. Hide after animation finishes
+        setTimeout(() => {
+            backdrop.classList.add('hidden');
+            
+            // Show the navigation bar again
+            const navBar = document.querySelector('nav');
+            if (navBar) {
+                navBar.classList.remove('hidden');
+            }
+        }, 300); // matches the duration-300 tailwind class
+        
+        // 3. Restore body scrolling
+        document.body.style.overflow = '';
+    }
+</script>
 {% endblock %}
